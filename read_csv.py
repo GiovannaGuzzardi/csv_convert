@@ -27,8 +27,6 @@ def db_csv_func(cur: cursor, conn: connection, url_srv: str, name_table: str, se
         # Cria a string de conflito
         conflict_target = ', '.join(unique_fields)
 
-        print(conflict_target)
-
         insert_query = f"""
         INSERT INTO {name_table} ({column_names})
         VALUES ({placeholders})
@@ -37,12 +35,14 @@ def db_csv_func(cur: cursor, conn: connection, url_srv: str, name_table: str, se
 
         # Preparar os dados para inserção
         data = dfs.values.tolist()
-        
+
+        for row in data:
+            print(row)
+            print("a\n")
         # Executar o comando de inserção em batch
         execute_batch(cur, insert_query, data)
 
-        # print(dfs)
-        # print(f"Preenchimento da tabela {name_table} com o arquivo {url_srv} realizado com sucesso")
+        print(f"Preenchimento da tabela {name_table} com o arquivo {url_srv} realizado com sucesso")
 
     except psycopg2.Error as e:
         print(f"Não foi possível ler o arquivo {url_srv} e escrever na tabela {name_table} no banco de dados\n{e}")
